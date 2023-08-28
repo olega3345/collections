@@ -2,7 +2,7 @@ package collection.collection.model;
 
 import java.util.Objects;
 
-public class Emploee {
+public class  Emploee {
         private final String firstName;
         private final String lasttName;
 
