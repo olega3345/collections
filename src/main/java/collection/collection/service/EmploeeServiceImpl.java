@@ -5,35 +5,33 @@ import collection.collection.exception.EmploeeNofFoundException;
 import collection.collection.model.Emploee;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 @Service
 public class EmploeeServiceImpl implements EmploeeService {
-    private final List<Emploee> emploeeList;
+    private final Map<String, Emploee> emploees;
 
     public EmploeeServiceImpl() {
-        this.emploeeList = new ArrayList<>();
+        this.emploees = new HashMap<>();
     }
 
     @Override
     public Emploee add(String firstName, String lastName) {
         Emploee emploee = new Emploee(firstName, lastName);
-        if (emploeeList.contains(emploee)) {
+        if (emploees.containsKey(emploee.getFullName())) {
             throw new EmploeeAlreadyAddedException();
         }
 
-        emploeeList.add(emploee);
+        emploees.put(emploee.getFullName(), emploee);
         return emploee;
     }
 
     @Override
     public Emploee remove(String firstName, String lastName) {
         Emploee emploee = new Emploee(firstName, lastName);
-        if (emploeeList.contains(emploee)) {
-            emploeeList.remove(emploee);
+        if (emploees.containsKey(emploee.getFullName())) {
+            emploees.remove(emploee.getFullName());
             return emploee;
         }
         throw new EmploeeNofFoundException();
@@ -42,15 +40,14 @@ public class EmploeeServiceImpl implements EmploeeService {
     @Override
     public Emploee find(String firstName, String lastName) {
         Emploee emploee = new Emploee(firstName, lastName);
-        if (emploeeList.contains(emploee)) {
-            emploeeList.remove(emploee);
-            return emploee;
+        if (emploees.containsKey(emploee.getFullName())) {
+           return emploees.remove(emploee.getFullName());
         }
         throw new EmploeeNofFoundException();
     }
 
     @Override
     public Collection<Emploee> findAll() {
-        return new ArrayList<>(emploeeList);
+        return Collections.unmodifiableCollection(emploees.values());
     }
 }
