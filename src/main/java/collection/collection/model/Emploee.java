@@ -18,7 +18,7 @@ public class  Emploee {
         public String getLusttName() {
             return lasttName;
         }
-        public String getFullName() {
+         public String getFullName() {
             return firstName + " " + lasttName;
         }
 
